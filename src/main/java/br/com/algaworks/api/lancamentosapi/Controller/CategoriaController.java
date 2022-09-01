@@ -20,7 +20,6 @@ public class CategoriaController {
     @Autowired
     private ICategoriaRepository iCategoriaRepository;
 
-
     @GetMapping
     public List<Categoria> listarTodasCategorias(){
         return iCategoriaRepository.findAll();
@@ -35,5 +34,10 @@ public class CategoriaController {
         response.setHeader("Location", uri.toASCIIString());
 
         return ResponseEntity.created(uri).body(categoriaSalva);
+    }
+
+    @GetMapping("/{codigo}")
+    public Categoria procurarUmaCategoriaPeloCodigo(@PathVariable Long codigo){
+        return iCategoriaRepository.findOne(codigo);
     }
 }
