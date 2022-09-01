@@ -3,9 +3,8 @@ package br.com.algaworks.api.lancamentosapi.Controller;
 import br.com.algaworks.api.lancamentosapi.Model.Categoria;
 import br.com.algaworks.api.lancamentosapi.Repository.ICategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,11 @@ public class CategoriaController {
     @GetMapping
     public List<Categoria> listarTodasCategorias(){
         return iCategoriaRepository.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void cadastrarNovaCategoria(@RequestBody Categoria categoria){
+        iCategoriaRepository.save(categoria);
     }
 }
