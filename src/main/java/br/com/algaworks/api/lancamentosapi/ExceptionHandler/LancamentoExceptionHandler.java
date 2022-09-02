@@ -12,7 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionHandler extends ResponseEntityExceptionHandler {
+public class LancamentoExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
     private MessageSource messageSource;
@@ -21,7 +21,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String mensagemParaUsuario = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
         String mensagemParaDesenvolvedor = ex.getCause().toString();
-        return handleExceptionInternal(ex, mensagemParaDesenvolvedor, headers, HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, new Erro(mensagemParaUsuario, mensagemParaDesenvolvedor), headers, HttpStatus.BAD_REQUEST, request);
     }
 
     private static class Erro {
