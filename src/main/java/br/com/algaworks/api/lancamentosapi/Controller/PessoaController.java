@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -56,5 +57,11 @@ public class PessoaController {
     public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable long codigo, @RequestBody @Valid Pessoa pessoa){
         Pessoa pessoaSalva = pessoaService.Atualizar(codigo, pessoa);
         return ResponseEntity.ok(pessoaSalva);
+    }
+
+    @PutMapping("/{codigo}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizarPropriedadeAtivo(@PathVariable long codigo, @RequestBody Boolean ativo){
+        pessoaService.atualizarPropriedadeAtivo(codigo, ativo);
     }
 }
