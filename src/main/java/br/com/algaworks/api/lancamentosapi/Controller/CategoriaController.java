@@ -1,15 +1,16 @@
 package br.com.algaworks.api.lancamentosapi.Controller;
 
+import br.com.algaworks.api.lancamentosapi.Event.RecursoCriadoEvent;
 import br.com.algaworks.api.lancamentosapi.Model.Categoria;
 import br.com.algaworks.api.lancamentosapi.Repository.ICategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,9 @@ public class CategoriaController {
 
     @Autowired
     private ICategoriaRepository iCategoriaRepository;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @GetMapping
     public List<Categoria> listarTodasCategorias(){
@@ -28,11 +32,8 @@ public class CategoriaController {
     public ResponseEntity<Categoria> cadastrarNovaCategoria(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
         Categoria categoriaSalva = iCategoriaRepository.save(categoria);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
-                .buildAndExpand(categoriaSalva.getCodigo()).toUri();
-        response.setHeader("Location", uri.toASCIIString());
-
-        return ResponseEntity.created(uri).body(categoriaSalva);
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
     }
 
     @GetMapping("/{codigo}")
