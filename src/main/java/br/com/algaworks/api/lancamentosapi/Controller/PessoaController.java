@@ -3,6 +3,7 @@ package br.com.algaworks.api.lancamentosapi.Controller;
 import br.com.algaworks.api.lancamentosapi.Event.RecursoCriadoEvent;
 import br.com.algaworks.api.lancamentosapi.Model.Pessoa;
 import br.com.algaworks.api.lancamentosapi.Repository.IPessoaRepository;
+import br.com.algaworks.api.lancamentosapi.Service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class PessoaController {
 
     @Autowired
     private IPessoaRepository iPessoaRepository;
+
+    @Autowired
+    private PessoaService pessoaService;
 
     @Autowired
     private ApplicationEventPublisher publisher;
@@ -46,5 +50,11 @@ public class PessoaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removerUmaPessoa(@PathVariable long codigo){
            iPessoaRepository.delete(codigo);
+    }
+
+    @PutMapping("/{codigo}")
+    public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable long codigo, @RequestBody @Valid Pessoa pessoa){
+        Pessoa pessoaSalva = pessoaService.Atualizar(codigo, pessoa);
+        return ResponseEntity.ok(pessoaSalva);
     }
 }
