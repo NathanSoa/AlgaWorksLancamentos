@@ -41,4 +41,10 @@ public class PessoaController {
         publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaCadastrada.getCodigo()));
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaCadastrada);
     }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removerUmaPessoa(@PathVariable long codigo){
+           iPessoaRepository.delete(codigo);
+    }
 }

@@ -34,7 +34,7 @@ public class LancamentoExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         reiniciaListaDeErros();
         mensagemParaUsuario = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
-        mensagemParaDesenvolvedor = ex.toString();
+        mensagemParaDesenvolvedor = ex.getCause().toString();
         erros = Arrays.asList(new Erro(mensagemParaUsuario, mensagemParaDesenvolvedor));
         return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
     }
