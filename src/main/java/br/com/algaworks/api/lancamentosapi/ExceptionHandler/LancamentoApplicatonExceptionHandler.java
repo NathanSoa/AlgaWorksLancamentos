@@ -1,5 +1,6 @@
 package br.com.algaworks.api.lancamentosapi.ExceptionHandler;
 
+import br.com.algaworks.api.lancamentosapi.Service.Exception.PessoaInexistenteOuInativaException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -15,7 +16,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @ControllerAdvice
-public class LancamentoExceptionHandler extends ResponseEntityExceptionHandler {
+public class LancamentoApplicatonExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
     private MessageSource messageSource;
@@ -63,6 +63,15 @@ public class LancamentoExceptionHandler extends ResponseEntityExceptionHandler {
         mensagemParaDesenvolvedor = ex.toString();
         erros = Arrays.asList(new Erro(mensagemParaUsuario, mensagemParaDesenvolvedor));
        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({PessoaInexistenteOuInativaException.class})
+    public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PessoaInexistenteOuInativaException ex, WebRequest request){
+        List<LancamentoApplicatonExceptionHandler.Erro> erros;
+        mensagemParaUsuario = messageSource.getMessage("pessoa.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());
+        mensagemParaDesenvolvedor = ex.toString();
+        erros = Arrays.asList(new LancamentoApplicatonExceptionHandler.Erro(mensagemParaUsuario, mensagemParaDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     private List<Erro> criaListaDeErros(BindingResult bindingResult){
