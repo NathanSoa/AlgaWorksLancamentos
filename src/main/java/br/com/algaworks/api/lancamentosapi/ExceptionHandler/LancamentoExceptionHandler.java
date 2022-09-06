@@ -1,8 +1,10 @@
 package br.com.algaworks.api.lancamentosapi.ExceptionHandler;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,6 +45,15 @@ public class LancamentoExceptionHandler extends ResponseEntityExceptionHandler {
         List<Erro> erros;
         erros = criaListaDeErros(ex.getBindingResult());
         return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleDataIntegrityVolationException(DataIntegrityViolationException ex, WebRequest request){
+        List<Erro> erros;
+        mensagemParaUsuario = messageSource.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());
+        mensagemParaDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+        erros = Arrays.asList(new Erro(mensagemParaUsuario, mensagemParaDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({EmptyResultDataAccessException.class})
