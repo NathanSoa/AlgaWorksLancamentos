@@ -1,5 +1,7 @@
 package br.com.algaworks.api.lancamentosapi.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,6 +26,12 @@ public class Pessoa implements Serializable {
 
     @Embedded
     private Endereco endereco;
+
+    @JsonIgnore
+    @Transient
+    public Boolean estaInativa(){
+        return !this.isAtivo();
+    }
 
     public long getCodigo() {
         return codigo;
