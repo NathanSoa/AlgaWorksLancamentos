@@ -1,7 +1,5 @@
 package br.com.algaworks.api.lancamentosapi.Model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,11 +18,9 @@ public class Lancamento implements Serializable {
     private String descricao;
 
     @Column(name = "data_vencimento")
-    @JsonFormat(pattern =  "dd/MM/yyyy")
     private LocalDate dataVencimento;
 
     @Column(name = "data_pagamento")
-    @JsonFormat(pattern =  "dd/MM/yyyy")
     private LocalDate dataPagamento;
 
     private BigDecimal valor;
