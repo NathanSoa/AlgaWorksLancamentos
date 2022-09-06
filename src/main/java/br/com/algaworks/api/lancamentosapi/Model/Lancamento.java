@@ -1,23 +1,30 @@
 package br.com.algaworks.api.lancamentosapi.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "lancamento")
-public class Lancamento {
+public class Lancamento implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long codigo;
 
-    private String descricacao;
+    private String descricao;
 
     @Column(name = "data_vencimento")
+    @JsonFormat(pattern =  "dd/MM/yyyy")
     private LocalDate dataVencimento;
 
     @Column(name = "data_pagamento")
+    @JsonFormat(pattern =  "dd/MM/yyyy")
     private LocalDate dataPagamento;
 
     private BigDecimal valor;
@@ -43,12 +50,12 @@ public class Lancamento {
         this.codigo = codigo;
     }
 
-    public String getDescricacao() {
-        return descricacao;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescricacao(String descricacao) {
-        this.descricacao = descricacao;
+    public void setDescricao(String descricacao) {
+        this.descricao = descricacao;
     }
 
     public LocalDate getDataVencimento() {
