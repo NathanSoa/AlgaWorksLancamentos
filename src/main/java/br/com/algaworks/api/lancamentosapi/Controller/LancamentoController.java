@@ -3,6 +3,7 @@ package br.com.algaworks.api.lancamentosapi.Controller;
 import br.com.algaworks.api.lancamentosapi.Event.RecursoCriadoEvent;
 import br.com.algaworks.api.lancamentosapi.ExceptionHandler.LancamentoApplicatonExceptionHandler;
 import br.com.algaworks.api.lancamentosapi.Model.Lancamento;
+import br.com.algaworks.api.lancamentosapi.Repository.Filter.LancamentoFilter;
 import br.com.algaworks.api.lancamentosapi.Repository.ILancamentoRepository;
 import br.com.algaworks.api.lancamentosapi.Service.Exception.PessoaInexistenteOuInativaException;
 import br.com.algaworks.api.lancamentosapi.Service.LancamentoService;
@@ -32,8 +33,8 @@ public class LancamentoController {
     private ApplicationEventPublisher publisher;
 
     @GetMapping
-    public List<Lancamento> listaTodosOsLancamentos(){
-        return iLancamentoRepository.findAll();
+    public List<Lancamento> pesquisarLancamentos(LancamentoFilter lancamentoFilter){
+        return iLancamentoRepository.filtrar(lancamentoFilter);
     }
 
     @GetMapping("/{codigo}")
