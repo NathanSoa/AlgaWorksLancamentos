@@ -1,8 +1,9 @@
 package br.com.algaworks.api.lancamentosapi.Repository.Lancamento;
 
 import br.com.algaworks.api.lancamentosapi.Model.Lancamento;
+import br.com.algaworks.api.lancamentosapi.Model.Lancamento_;
 import br.com.algaworks.api.lancamentosapi.Repository.Filter.LancamentoFilter;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LancamentoRepositoryQueryImpl implements LancamentoRepositoryQuery{
+public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 
     @PersistenceContext
     private EntityManager manager;
@@ -37,24 +38,23 @@ public class LancamentoRepositoryQueryImpl implements LancamentoRepositoryQuery{
 
         if(descricaoNaoEstaNula(lancamentoFilter)){
             predicates.add(builder.like(
-                    builder.lower(
-                            root.get("descricao")),
-                    "%" + lancamentoFilter.getDescricacao().toLowerCase() + "%")
-            );
+                    builder.lower(root.get(Lancamento_.descricao)), "%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));
         }
 
         if(dataVencimentoDeNaoEstaNula(lancamentoFilter)){
-            //predicates.add(e);
+            predicates.add(
+                    builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getDataVencimentoDe()));
         }
 
         if(dataVencimentoAteNaoEstaNula(lancamentoFilter)){
-            //predicates.add(e);
+            predicates.add(
+                    builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getDataVencimentoAte()));
         }
         return predicates.toArray(new Predicate[predicates.size()]);
     }
 
     private Boolean descricaoNaoEstaNula(LancamentoFilter lancamentoFilter){
-        return !StringUtils.isEmpty(lancamentoFilter.getDescricacao());
+        return !ObjectUtils.isEmpty(lancamentoFilter.getDescricao());
     }
 
     private Boolean dataVencimentoDeNaoEstaNula(LancamentoFilter lancamentoFilter){
