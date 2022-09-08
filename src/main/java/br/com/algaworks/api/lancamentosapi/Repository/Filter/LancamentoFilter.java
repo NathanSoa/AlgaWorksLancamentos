@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class LancamentoFilter {
 
-    private String descricacao;
+    private String descricao;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataVencimentoDe;
@@ -14,12 +14,12 @@ public class LancamentoFilter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataVencimentoAte;
 
-    public String getDescricacao() {
-        return descricacao;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescricacao(String descricacao) {
-        this.descricacao = descricacao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public LocalDate getDataVencimentoDe() {
