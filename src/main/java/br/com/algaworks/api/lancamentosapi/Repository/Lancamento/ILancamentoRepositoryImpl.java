@@ -15,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
+public class ILancamentoRepositoryImpl implements ILancamentoRepositoryQuery {
 
     @PersistenceContext
     private EntityManager manager;
