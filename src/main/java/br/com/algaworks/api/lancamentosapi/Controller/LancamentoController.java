@@ -7,6 +7,8 @@ import br.com.algaworks.api.lancamentosapi.Repository.ILancamentoRepository;
 import br.com.algaworks.api.lancamentosapi.Service.LancamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +31,8 @@ public class LancamentoController {
     private ApplicationEventPublisher publisher;
 
     @GetMapping
-    public List<Lancamento> pesquisarLancamentos(LancamentoFilter lancamentoFilter){
-        return iLancamentoRepository.filtrar(lancamentoFilter);
+    public Page<Lancamento> pesquisarLancamentos(LancamentoFilter lancamentoFilter, Pageable pageable){
+        return iLancamentoRepository.filtrar(lancamentoFilter, pageable);
     }
 
     @GetMapping("/{codigo}")
